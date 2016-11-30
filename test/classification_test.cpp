@@ -1,16 +1,45 @@
-#define CATCH_CONFIG_MAIN 
+#define CATCH_CONFIG_MAIN
+
+#include<fstream> 
 #include "catch.hpp"
-#include <bits/stdc++.h>
 #include "../src/bayes.h"
+#include "test_helper.h"
+#include <algorithm>
 
 TEST_CASE( "Gives a legitimate binary classification" ) {
     Bayes b;
     
-    b.add_observation("Best sentence ever!", "Good");
-    b.add_observation("I love school!", "Good");
-    b.add_observation("good stuff guys", "Good");
-    b.add_observation("bad guy", "Bad");
+    b.observe("Best sentence ever!", "Good");
+    b.observe("I love school!", "Good");
+    b.observe("good stuff guys", "Good");
+    b.observe("bad guy", "Bad");
 
     REQUIRE(b.classify("this is a good sentence") == "Good");
+
+}
+
+
+TEST_CASE("Is able to classify big data") {
+    Bayes b;
+    int n = 1000;
+
+    auto training = read_data("test/data/20ng-train-all-terms.txt");
+
+    for(pair<string, string> label_data : training) {
+        b.observe(label_data.second, label_data.first);
+    }
+    auto test = read_data("test/data/20ng-test-all-terms.txt");
+    random_shuffle(test.begin(), test.end());
+
+    ll errors = 0;
+    
+    for(int i = 0; i < n; i++) {
+        pair<string, string> label_data = test[i];
+
+        string label = b.classify(label_data.second);
+        if (label != label_data.first) errors++;
+    }
+
+    REQUIRE((errors / (1.0*n)) < 0.95);
 
 }

@@ -1,7 +1,11 @@
 #ifndef bayes
 #define bayes
 
-#include <bits/stdc++.h>
+#include <map>
+#include <vector>
+#include <limits>
+#include <cmath>
+#include <sstream>
 
 using namespace std;
 typedef long long ll;
@@ -40,7 +44,7 @@ class Bayes {
         Bayes() {}
 
         // Add a new observation
-        void add_observation(string data, string label) {
+        void observe(string data, string label) {
             priori_counts[label]++;
             count++;
             for(string term : tokenize_string(data)) {
@@ -56,7 +60,6 @@ class Bayes {
 
             for(auto label_pair : priori_counts) {
                 string label = label_pair.first;
-                
                 
                 // Score for a single label given the data
                 double score = log(estimate_priori(label));
