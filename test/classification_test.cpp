@@ -1,10 +1,13 @@
 #define CATCH_CONFIG_MAIN
 
-#include<fstream> 
+#include <fstream> 
+#include <iostream>
 #include "catch.hpp"
 #include "../src/bayes.h"
 #include "test_helper.h"
 #include <algorithm>
+
+using namespace std;
 
 TEST_CASE( "Gives a legitimate binary classification" ) {
     Bayes b;
@@ -38,8 +41,6 @@ TEST_CASE("Is able to classify big data") {
 
         string label = b.classify(label_data.second);
         if (label != label_data.first) errors++;
-    }
-
-    REQUIRE((errors / (1.0*n)) < 0.95);
-
+    } 
+    REQUIRE((errors / (1.0*n)) < 0.80);
 }

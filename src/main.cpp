@@ -14,11 +14,5 @@ int main() {
         b.observe(a.second, a.first);
     }
 
-    cout << b.classify("atheisim is the best thing ever") << endl;
-    cout << b.classify("donald trump is going to build a wall") << endl;
-    cout << b.classify("baseball is the laziest sport") << endl;
-    cout << b.classify("football is a good sport") << endl;
-    cout << b.classify("elon musk makes solid rockets that fly to space") << endl;
     cout << b.classify("make america great again") << endl;
-
 }

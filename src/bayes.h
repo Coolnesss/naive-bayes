@@ -1,6 +1,7 @@
 #ifndef bayes
 #define bayes
 
+#include <unordered_map>
 #include <map>
 #include <vector>
 #include <limits>
@@ -14,13 +15,13 @@ class Bayes {
 
     private:
         // For each label, the count of each word seen with that label
-        map<string, map<string, ll>> word_counts;
+        map<string, unordered_map<string, ll>> word_counts;
         // amount of each label overall
         map<string, ll> priori_counts;
         // Total amount of observations recorded
-        ll count;
+        ll count = 0;
         // Total amounts of each term
-        map<string, ll> term_counts;
+        unordered_map<string, ll> term_counts;
         double smoothing = 0.5;
 
         double estimate_priori(string label) {
