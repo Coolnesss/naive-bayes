@@ -14,7 +14,7 @@ class BayesClassifier {
         BayesClassifier() {};
 
         void observe(string label, string data) {
-            b.observe(data, label);
+            b.observe(label, data);
         }
 
         string classify(string data) {

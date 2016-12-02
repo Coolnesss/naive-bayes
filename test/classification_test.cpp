@@ -6,6 +6,7 @@
 #include "../src/bayes.h"
 #include "test_helper.h"
 #include <algorithm>
+#include <chrono>
 
 using namespace std;
 
@@ -24,23 +25,25 @@ TEST_CASE( "Gives a legitimate binary classification" ) {
 
 TEST_CASE("Is able to classify big data") {
     Bayes b;
-    int n = 1000;
 
     auto training = read_data("test/data/20ng-train-all-terms.txt");
+    auto test = read_data("test/data/20ng-test-all-terms.txt");
 
+    auto start = std::chrono::high_resolution_clock::now();
     for(pair<string, string> label_data : training) {
         b.observe(label_data.second, label_data.first);
     }
-    auto test = read_data("test/data/20ng-test-all-terms.txt");
-    random_shuffle(test.begin(), test.end());
-
-    ll errors = 0;
-    
+    ll errors = 0;    
+    int n = test.size();
     for(int i = 0; i < n; i++) {
         pair<string, string> label_data = test[i];
 
         string label = b.classify(label_data.second);
         if (label != label_data.first) errors++;
     } 
+
+    auto end = std::chrono::high_resolution_clock::now();
+    chrono::duration<double> diff = end-start;
+    cout << "Time " << diff.count() << endl;
     REQUIRE((errors / (1.0*n)) < 0.80);
 }
